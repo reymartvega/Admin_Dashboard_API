@@ -1,7 +1,7 @@
 import Product from "../models/Product.js";
 import ProductStat from "../models/ProductStat.js";
 
-export const getProduct = async(request,response) =>{
+export const getProducts = async(request,response) =>{
     try {
         const products = await Product.find();
         const productWithStats = await Promise.all(
