@@ -11,11 +11,12 @@ import managementRoutes from './routes/management.js'
 import salesRoutes from './routes/sales.js'
 //data imports 
 import User from './models/User.js'
+import AffiliateStat from './models/AffiliateStat.js'
 import Product from './models/Product.js'
 import ProductStat from './models/ProductStat.js'
 import Transaction from './models/Transaction.js'
 import OverallStat from './models/OverallStat.js'
-import { dataUser, dataProduct,dataProductStat,dataTransaction,dataOverallStat } from './data/index.js'
+import { dataUser, dataProduct,dataProductStat,dataTransaction,dataOverallStat,dataAffiliateStat } from './data/index.js'
 
 /* CONFIGURATIONS */
 
