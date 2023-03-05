@@ -13,27 +13,27 @@ export const getAdmins = async (request,response) => {
 export const getUserPerformance = async (request,response) => {
     try {
         const {id} = request.params
-        const userWithStats = User.aggregate([
-            { $match:{_id: new mongoose.Types.ObjectId(id)}},
+        const userWithStats = await User.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(id) } },
             {
-                $lookup:{
-                    from:"affiliatestats",
-                    localField:"_id",
-                    foreignField:"userId",
-                    as:"affiliatestat"
-                }
+              $lookup: {
+                from: "affiliatestats",
+                localField: "_id",
+                foreignField: "userId",
+                as: "affiliateStats",
+              },
             },
-            {$unwind: "$affiliateStats"}
-        ])
+            { $unwind: "$affiliateStats" },
+          ])
         const saleTransactions = await Promise.all(
-            userWithStats[0].affiliateSales((id) => {
-                Transaction.findById(id)
+            userWithStats[0].affiliateStats.affiliateSales.map((id) => {
+              return Transaction.findById(id)
             })
         )
         const filteredSaleTransactions = saleTransactions.filter(
             (transaction) => transaction !== null
-        )
-        response.status(200).json({user:userWithStats[0],sales:filteredSaleTransactions})
+          )
+        response.status(200).json({ user: userWithStats[0], sales: filteredSaleTransactions });
     } catch (error) {
         response.status(400).json({message:error.message})
     }
